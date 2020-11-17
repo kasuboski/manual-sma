@@ -5,7 +5,7 @@ Container to run [mdhiggins/sickbeard_mp4_automator](https://github.com/mdhiggin
 ## Usage
 Auto convert a folder:
 
-`docker run -it --rm -v /my/media/show:/convert manual-sma -i /convert -a`
+`docker run -it --rm -v /my/media/show:/convert kasuboski/manual-sma -i /convert -a`
 
 For more info read the manual usage [section](https://github.com/mdhiggins/sickbeard_mp4_automator#manual-script-usage).
 
