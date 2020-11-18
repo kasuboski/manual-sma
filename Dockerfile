@@ -22,8 +22,8 @@ RUN \
 
 COPY entrypoint.sh /entrypoint.sh
 
-COPY --from=ffmpeg /usr/local/bin/ffmpeg /usr/local/bin/ffmpeg
-COPY --from=ffmpeg /usr/local/bin/ffprobe /usr/local/bin/ffprobe
+# get ffmpeg and ffprobe from the built image
+COPY --from=ffmpeg /usr/local/bin/ff* /usr/local/bin/
 
 RUN \
   # make directory
