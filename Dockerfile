@@ -1,4 +1,5 @@
-FROM ubuntu:bionic
+FROM linuxserver/ffmpeg as ffmpeg
+FROM ubuntu:bionic as base
 
 ENV SMA_PATH /usr/local/sma
 
@@ -21,6 +22,9 @@ RUN \
 
 COPY entrypoint.sh /entrypoint.sh
 
+COPY --from=ffmpeg /usr/local/bin/ffmpeg /usr/local/bin/ffmpeg
+COPY --from=ffmpeg /usr/local/bin/ffprobe /usr/local/bin/ffprobe
+
 RUN \
   # make directory
   mkdir ${SMA_PATH} && \
@@ -28,14 +32,7 @@ RUN \
   git clone https://github.com/mdhiggins/sickbeard_mp4_automator.git ${SMA_PATH} && \
   # set up a virtual self contained python environment
   python3 -m virtualenv ${SMA_PATH}/venv && \
-  ${SMA_PATH}/venv/bin/pip install -r ${SMA_PATH}/setup/requirements.txt && \
-  # ffmpeg
-  wget https://johnvansickle.com/ffmpeg/builds/ffmpeg-git-amd64-static.tar.xz -O /tmp/ffmpeg.tar.xz && \
-  tar -xJf /tmp/ffmpeg.tar.xz -C /usr/local/bin --strip-components 1 && \
-  chgrp users /usr/local/bin/ffmpeg && \
-  chgrp users /usr/local/bin/ffprobe && \
-  chmod g+x /usr/local/bin/ffmpeg && \
-  chmod g+x /usr/local/bin/ffprobe
+  ${SMA_PATH}/venv/bin/pip install -r ${SMA_PATH}/setup/requirements.txt
 
 WORKDIR ${SMA_PATH}
 
