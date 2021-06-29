@@ -29,3 +29,7 @@ jobs:
           docker buildx build --push \
             --tag ${{ github.repository }}:${{ steps.vars.outputs.sha_short }} \
             --platform linux/amd64,linux/arm/v7,linux/arm64 .
+      - name: update latest
+        run: |
+          docker image tag ${{ github.repository }}:${{ steps.vars.outputs.sha_short }} ${{ github.repository }}:latest
+          docker image push ${{ github.repository }}:latest
